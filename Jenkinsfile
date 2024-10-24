@@ -48,8 +48,7 @@ pipeline {
             steps {
                 echo 'Running Ansible Playbook on Master Node'
                 sh '''
-                    ssh ansibleadmin@<master-node-ip> \
-                    "/usr/bin/ansible-playbook -i /etc/ansible/hosts /tmp/ansible-playbook.yml"
+                    ssh ansibleadmin@43.204.13.114 "/usr/bin/ansible-playbook -i /etc/ansible/hosts /tmp/ansible-playbook.yml"
                 '''
             }
         }   
