@@ -45,6 +45,6 @@ pipeline {
                 // Ensure the playbook path is relative to the workspace
                 ansiblePlaybook installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml', vaultTmpPath: ''
             }
-  
+        }
     }
 }
