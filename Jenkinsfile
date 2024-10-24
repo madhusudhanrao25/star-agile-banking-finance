@@ -38,13 +38,19 @@ pipeline {
 				sh "docker push maddy2964/banking-app:latest"                
             }
         }
+        stage('Debug Workspace') {
+            steps {
+                echo 'Listing workspace files'
+                sh 'ls -la /home/devopsadmin/workspace/Banking-App'
+            }
+        }
         stage('Deploy to Prod-Server') {
             steps {
                 echo 'Running Ansible Playbook'
                 ansiblePlaybook installation: 'ansible', 
-                               inventory: '/etc/ansible/hosts', // Use the default hosts file in the master node
-                               playbook: '/home/devopsadmin/workspace/Banking-App/ansible-playbook.yml', // Path to your playbook in the workspace
-                               vaultTmpPath: '' // Specify if you have vaults; otherwise, leave it empty
+                               inventory: '/etc/ansible/hosts',
+                               playbook: '/home/devopsadmin/workspace/Banking-App/ansible-playbook.yml',
+                               vaultTmpPath: ''
             }
         }
     }
