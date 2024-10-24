@@ -39,10 +39,12 @@ pipeline {
             }
         }
         stage('Publish to Prod-Server') {
+            agent { label 'master' } // This will execute on the master node
             steps {
-                ansiblePlaybook installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml', vaultTmpPath: ''                
+                echo 'Running Ansible Playbook'
+                // Ensure the playbook path is relative to the workspace
+                ansiblePlaybook installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml', vaultTmpPath: ''
             }
-        }
   
     }
 }
