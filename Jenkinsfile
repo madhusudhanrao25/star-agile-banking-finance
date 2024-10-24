@@ -46,5 +46,6 @@ pipeline {
                                playbook: '/home/devopsadmin/workspace/Banking-App/ansible-playbook.yml', // Path to your playbook in the workspace
                                vaultTmpPath: '' // Specify if you have vaults; otherwise, leave it empty
             }
+        }
     }
 }
