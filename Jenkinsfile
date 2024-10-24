@@ -38,20 +38,21 @@ pipeline {
 				sh "docker push maddy2964/banking-app:latest"                
             }
         }
-        stage('Debug Workspace') {
+        stage('Copy Playbook to Master') {
             steps {
-                echo 'Listing workspace files'
-                sh 'ls -la /home/devopsadmin/workspace/Banking-App'
+                echo 'Copying Ansible Playbook to Master Node'
+                sh 'scp /home/devopsadmin/workspace/Banking-App/ansible-playbook.yml ansibleadmin@43.204.13.114:/tmp/'
             }
         }
         stage('Deploy to Prod-Server') {
             steps {
-                echo 'Running Ansible Playbook'
-                ansiblePlaybook installation: 'ansible', 
-                               inventory: '/etc/ansible/hosts',
-                               playbook: '/home/devopsadmin/workspace/Banking-App/ansible-playbook.yml',
-                               vaultTmpPath: ''
+                echo 'Running Ansible Playbook on Master Node'
+                sh '''
+                    ssh ansibleadmin@<master-node-ip> \
+                    "/usr/bin/ansible-playbook -i /etc/ansible/hosts /tmp/ansible-playbook.yml"
+                '''
             }
-        }
+        }   
+
     }
 }
