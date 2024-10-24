@@ -38,6 +38,11 @@ pipeline {
 				sh "docker push maddy2964/banking-app:latest"                
             }
         }
-        
+        stage('Publish to Prod-Server') {
+            steps {
+                ansiblePlaybook installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml', vaultTmpPath: ''                
+            }
+        }
+  
     }
 }
