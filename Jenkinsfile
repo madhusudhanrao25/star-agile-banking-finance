@@ -44,14 +44,21 @@ pipeline {
                 sh 'scp /home/devopsadmin/workspace/Banking-App/ansible-playbook.yml ansibleadmin@43.204.13.114:/tmp/'
             }
         }
-        stage('Deploy to Prod-Server') {
+        stage('Deploy to test-Server') {
             steps {
                 echo 'Running Ansible Playbook on Master Node'
                 sh '''
                     ssh ansibleadmin@43.204.13.114 "/usr/bin/ansible-playbook -i /etc/ansible/hosts /tmp/ansible-playbook.yml"
                 '''
             }
-        }   
+        } 
+        stage('Deploy to Kubernetes Cluster') {
+            steps {
+				script {
+				sshPublisher(publishers: [sshPublisherDesc(configName: 'Kubernetes_Master', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f kubernetesdeploy.yaml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.yaml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+			    }				          
+            }  
 
+        }
     }
 }
